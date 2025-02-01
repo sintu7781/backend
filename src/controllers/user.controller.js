@@ -46,7 +46,7 @@ const registerUser = asyncHandler( async (req, res) => {
     });
 
     if (existedUser) {
-        throw new ApiError(409, "User with email or username already exists");
+        throw new ApiError(400, "User with email or username already exists");
     }
 
     const avatarLocalPath = req.files?.avatar[0]?.path;
@@ -150,8 +150,8 @@ const logoutUser = asyncHandler(async (req, res) => {
     await User.findByIdAndUpdate(
         req.user._id,
         {
-            $set: {
-                refreshToken: undefined
+            $unset: {
+                refreshToken: 1
             }
         },
         {
