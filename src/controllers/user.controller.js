@@ -101,7 +101,6 @@ const loginUser = asyncHandler(async (req, res) => {
     // access and refresh Token
     // send cookies
 
-
     const { email, username, password } = req.body;
     if (!username && !email) {
         throw new ApiError(400, "username or email is required");
@@ -200,12 +199,12 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     
         return res
             .status(200)
-            .cookie("accessToken", accessToken)
-            .cookie("refreshToken", newRefreshToken)
+            .cookie("accessToken", accessToken, options)
+            .cookie("refreshToken", newRefreshToken, options)
             .json(
                 new ApiResponse(
                     200,
-                    { accessToken, refreshToken, newRefreshToken },
+                    { accessToken, refreshToken: newRefreshToken },
                     "Access token refreshed"
                 )
             )
